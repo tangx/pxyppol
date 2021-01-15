@@ -8,7 +8,7 @@ import (
 )
 
 func RandomHandler(c *gin.Context) {
-	pxy := RandomPxy()
+	pxy := pxyctx.RandomPxy()
 	c.String(http.StatusOK, pxy)
 }
 

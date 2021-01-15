@@ -2,7 +2,6 @@ package checker
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/tangx/pxypool/pkg/browser"
 	"github.com/tangx/pxypool/pkg/httpx"
 	"github.com/tangx/pxypool/pkg/pxyctx"
 )
@@ -38,7 +37,7 @@ func Hire() {
 }
 func Fire() {
 	for {
-		pxy := browser.RandomPxy()
+		pxy := pxyctx.RandomPxy()
 		if !Check(pxy) {
 			logrus.Infof("fire pxy : %s \n", pxy)
 			pxyctx.PxyExpiredCh <- pxy

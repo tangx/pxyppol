@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/tangx/pxypool/pkg/browser"
+	"github.com/tangx/pxypool/pkg/pxyctx"
 )
 
 func GET(target, pxy string) (*http.Response, error) {
@@ -34,6 +34,6 @@ func GET(target, pxy string) (*http.Response, error) {
 }
 
 func GETx(target string) (*http.Response, error) {
-	pxy := browser.RandomPxy()
+	pxy := pxyctx.RandomPxy()
 	return GET(target, pxy)
 }
