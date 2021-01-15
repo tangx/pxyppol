@@ -53,6 +53,6 @@ func Filter(pxy string) {
 func Initial() {
 	for {
 		candidate := <-pxyctx.PxyCandidateCh
-		Filter(candidate)
+		go Filter(candidate)
 	}
 }
