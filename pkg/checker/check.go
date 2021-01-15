@@ -2,6 +2,7 @@ package checker
 
 import (
 	"github.com/sirupsen/logrus"
+	"github.com/tangx/pxypool/pkg/browser"
 	"github.com/tangx/pxypool/pkg/httpx"
 	"github.com/tangx/pxypool/pkg/pxyctx"
 )
@@ -15,11 +16,7 @@ func get(u string, pxy string) bool {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == 200 {
-		logrus.Infof("%s ok\n", pxy)
-		return true
-	}
-	return false
+	return resp.StatusCode == 200
 }
 
 func Check(pxy string) bool {
@@ -28,15 +25,27 @@ func Check(pxy string) bool {
 	return get(u, pxy)
 }
 
-func Filter(pxy string) {
-	if Check(pxy) {
-		pxyctx.PxyReadyCh <- pxy
-	}
-}
-
-func Initial() {
+func Hire() {
 	for {
 		candidate := <-pxyctx.PxyCandidateCh
-		go Filter(candidate)
+		go func(pxy string) {
+			if Check(pxy) {
+				logrus.Infof("hire pxy : %s \n", pxy)
+				pxyctx.PxyReadyCh <- pxy
+			}
+		}(candidate)
 	}
+}
+func Fire() {
+	for {
+		pxy := browser.RandomPxy()
+		if !Check(pxy) {
+			logrus.Infof("fire pxy : %s \n", pxy)
+			pxyctx.PxyExpiredCh <- pxy
+		}
+	}
+}
+func Initial() {
+	go Hire()
+	go Fire()
 }

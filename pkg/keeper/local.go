@@ -6,8 +6,13 @@ import (
 
 func Local() {
 	for {
-		pxy := <-pxyctx.PxyReadyCh
-		pxyctx.Pool[pxy] = true
+		select {
+		case pxy := <-pxyctx.PxyExpiredCh:
+			// logrus.Infof("proxy expired: %s", pxy)
+			delete(pxyctx.Pool, pxy)
+		case pxy := <-pxyctx.PxyReadyCh:
+			pxyctx.Pool[pxy] = true
+		}
 	}
 }
 

@@ -26,7 +26,7 @@ func GET(target, pxy string) (*http.Response, error) {
 
 	client := &http.Client{
 		Transport: tr,
-		Timeout:   time.Second * 1,
+		Timeout:   time.Second * 5,
 	}
 
 	return client.Get(target)

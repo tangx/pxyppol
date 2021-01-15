@@ -13,7 +13,7 @@ import (
 
 func craw(page int) {
 	url := fmt.Sprintf("https://www.kuaidaili.com/free/inha/%d/", page)
-	logrus.Infoln(url)
+	logrus.Debugln(url)
 
 	// Request the HTML page.
 	resp, err := httpx.GETx(url)
