@@ -2,12 +2,12 @@ package xiladaili
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/sirupsen/logrus"
+	"github.com/tangx/pxypool/pkg/httpx"
 	"github.com/tangx/pxypool/pkg/pxyctx"
 )
 
@@ -16,19 +16,20 @@ func craw(page int) {
 	logrus.Infoln(url)
 
 	// Request the HTML page.
-	res, err := http.Get(url)
+	// resp, err := httpx.GETx(url)
+	resp, err := httpx.GET(url, "")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
-	defer res.Body.Close()
-	if res.StatusCode != 200 {
-		logrus.Errorf("status code error: %d %s", res.StatusCode, res.Status)
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		logrus.Errorf("status code error: %d %s", resp.StatusCode, resp.Status)
 		return
 	}
 
 	// Load the HTML document
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		logrus.Error(err)
 		return

@@ -1,8 +1,8 @@
 package pxyctx
 
 var (
-	PxyCandidateCh = make(chan string, 10)
-	PxyReadyCh     = make(chan string, 10)
+	PxyCandidateCh = make(chan string, 200)
+	PxyReadyCh     = make(chan string, 20)
 	PxyExpiredCh   = make(chan string, 10)
 )
 

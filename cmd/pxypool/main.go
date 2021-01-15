@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"github.com/tangx/pxypool/pkg/browser"
 	"github.com/tangx/pxypool/pkg/checker"
-	"github.com/tangx/pxypool/pkg/crawler/kuaidaili"
-	xiladaili "github.com/tangx/pxypool/pkg/crawler/xila"
+	"github.com/tangx/pxypool/pkg/crawler/xiladaili"
 	"github.com/tangx/pxypool/pkg/keeper"
 )
 
@@ -18,9 +18,9 @@ func main() {
 }
 
 func init() {
-	// logrus.SetLevel(logrus.DebugLevel)
+	logrus.SetLevel(logrus.DebugLevel)
 	go checker.Initial()
 	go keeper.Initial()
-	go kuaidaili.Initial()
+	// go kuaidaili.Initial()
 	go xiladaili.Initial()
 }

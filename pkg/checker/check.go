@@ -1,29 +1,13 @@
 package checker
 
 import (
-	"crypto/tls"
-	"net/http"
-	"net/url"
-	"time"
-
 	"github.com/sirupsen/logrus"
+	"github.com/tangx/pxypool/pkg/httpx"
 	"github.com/tangx/pxypool/pkg/pxyctx"
 )
 
 func get(u string, pxy string) bool {
-
-	proxy, _ := url.Parse(pxy)
-	tr := &http.Transport{
-		Proxy:           http.ProxyURL(proxy),
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{
-		Transport: tr,
-		Timeout:   time.Second * 1,
-	}
-
-	resp, err := client.Get(u)
+	resp, err := httpx.GET(u, pxy)
 	if err != nil {
 		// fmt.Printf("%s not work\n", pxy)
 		logrus.Debugf("%s not work\n", pxy)
